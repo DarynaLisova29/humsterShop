@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background: linear-gradient(to right, #c8ff00, #ff5e00);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #task{
+            width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .btn{
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div id="task">
+        <button class="btn">Task 1</button>
+        <div id="activity"></div>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $('#activity').hide();
+    $('.btn').click(function() {
+        $('.btn').attr('disabled', 'true');
+        $.ajax('https://bored.api.lewagon.com/api/activity', {
+            success: function(result) {
+                $('#activity').show();
+                $('#activity').html(
+                    `
+                    <p>Activity: ${result.activity}</p>
+                    <p>Type: ${result.type}</p>
+                    <p>Price: ${result.price}</p>
+                    `
+                );
+                $('.btn').attr('disabled', false);
+                $('.btn').html('Randomize again');
+            },
+            error:function() {
+                console.log('Error loading activity');
+                $('.btn').attr('disabled', false);
+            }
+        });
+    });
+</script>
+</html>
